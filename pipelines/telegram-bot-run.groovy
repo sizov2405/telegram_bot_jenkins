@@ -1,10 +1,10 @@
 pipeline {
     agent any
     stages{
-        stage('Cleanup') {
+        stage("Cleanup") {
             steps {
                 script {
-                    println(${bot_name})
+                    println("${bot_name}")
                 }
             }
         }
