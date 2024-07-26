@@ -10,10 +10,14 @@ pipeline {
             }
         }
         stage ("Select branch") {
-            def branchesAsString = ""
-            withCredentials([usernamePassword(credentialsId: 'GITHUB_CREDENTIALS', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
-                def output = sh(script: "git ls-remote --heads https://${USERNAME}:${PASSWORD}@github.com/sizov2405/autoban_telegram_bot", returnStdout: true)
-                println(output)
+            steps {
+                script {
+                    def branchesAsString = ""
+                    withCredentials([usernamePassword(credentialsId: 'GITHUB_CREDENTIALS', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
+                        def output = sh(script: "git ls-remote --heads https://${USERNAME}:${PASSWORD}@github.com/sizov2405/autoban_telegram_bot", returnStdout: true)
+                        println(output)
+                    }
+                }
             }
         }
     }
