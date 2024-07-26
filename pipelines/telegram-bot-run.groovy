@@ -1,7 +1,4 @@
 pipeline {
-    environment{
-
-    }
     stages{
         stage('Cleanup') {
             steps {
