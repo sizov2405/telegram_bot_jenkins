@@ -36,10 +36,14 @@ def getChoiceParameterDefinition() {
 
 def getApplicationDeployments(applicationName) {
     switch (applicationName) {
-        case "autoban_telegram_bot" -> new Deployment(applicationName, "https://github.com/sizov2405/autoban_telegram_bot.git")
-        case "autocomment_telegram_bot" -> new Deployment(applicationName, "https://github.com/sizov2405/autocomment_telegram_bot.git")
-        case "add_text_telegram_bot"  -> new Deployment(applicationName, "https://github.com/sizov2405/add_bot_text_bot.git")
-        default -> null
+        case "autoban_telegram_bot" :
+            return new Deployment(applicationName, "https://github.com/sizov2405/autoban_telegram_bot.git")
+        case "autocomment_telegram_bot":
+            return new Deployment(applicationName, "https://github.com/sizov2405/autocomment_telegram_bot.git")
+        case "add_text_telegram_bot" :
+            return  new Deployment(applicationName, "https://github.com/sizov2405/add_bot_text_bot.git")
+        default :
+            return null
     }
 }
 
