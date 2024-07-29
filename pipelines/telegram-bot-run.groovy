@@ -1,3 +1,5 @@
+def SELECTED_BRANCH
+def DEPLOYMENT
 pipeline {
     agent any
     stages{
@@ -12,18 +14,21 @@ pipeline {
         stage ("Select branch") {
             steps {
                 script {
+                    DEPLOYMENT = getApplicationDeployments(bot_name)
                     def branchesAsString = ""
                     propertyList = []
                     branches = [];
                     withCredentials([string(credentialsId: 'GITHUB_TOKEN', variable: 'token')]) {
-                        def output = sh(script: "git ls-remote --heads https://${token}@github.com/sizov2405/autoban_telegram_bot.git", returnStdout: true)
+                        def githubRestUrl = getGithubRestURL(DEPLOYMENT.githubUrl, token)
+                        println(githubRestUrl)
+                        def output = sh(script: "git ls-remote --heads ${githubRestUrl}", returnStdout: true)
                         branches = getAllGitBranches(output)
                     }
                     propertyList.add(getChoiceParameterDefinition('branch',branches))
                     timeout(time: 2, unit : 'MINUTES') {
-                        customSelections = input(id: 'baseChoices', message: 'Set params', parameters: propertyList)
+                        SELECTED_BRANCH = input(id: 'baseChoices', message: 'Set params', parameters: propertyList)
                     }
-                    println(customSelections[0])
+
 //                    def branch = customSelections['branch']
 //                    println("Branch ${branch}")
                 }
@@ -58,6 +63,11 @@ def getApplicationDeployments(applicationName) {
         default :
             return null
     }
+}
+
+def getGithubRestURL(githubUrl, token) {
+    def trimmedUrl = githubUrl.replaceFirst("https://", "")
+    return "https://${token}@${trimmedUrl}"
 }
 
 class Deployment {
