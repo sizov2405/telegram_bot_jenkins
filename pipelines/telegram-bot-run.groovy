@@ -23,7 +23,7 @@ pipeline {
                     timeout(time: 2, unit : 'MINUTES') {
                         customSelections = input(id: 'baseChoices', message: 'Set params', parameters: propertyList)
                     }
-                    println(customSelections)
+                    println(customSelections[0])
 //                    def branch = customSelections['branch']
 //                    println("Branch ${branch}")
                 }
