@@ -29,8 +29,7 @@ pipeline {
                         SELECTED_BRANCH = input(id: 'baseChoices', message: 'Set params', parameters: propertyList)
                     }
 
-//                    def branch = customSelections['branch']
-//                    println("Branch ${branch}")
+                    println("Branch ${SELECTED_BRANCH}")
                 }
             }
         }
