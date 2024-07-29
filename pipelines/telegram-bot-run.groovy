@@ -33,7 +33,7 @@ pipeline {
 
 def getAllGitBranches(scriptOutput) {
     def branches = ['main']
-    def anotherBranches = scriptOutput.readLines().collect{it.cplit()[1].replaceAll("refs/heads/", "")}.sort().reverse()
+    def anotherBranches = scriptOutput.readLines().collect{it.split()[1].replaceAll("refs/heads/", "")}.sort().reverse()
     for (String element in anotherBranches) {
         if ("main" != element) {
             branches.add(element)
