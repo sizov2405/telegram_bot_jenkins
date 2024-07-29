@@ -13,10 +13,18 @@ pipeline {
             steps {
                 script {
                     def branchesAsString = ""
+                    propertyList = []
+                    branches = [];
                     withCredentials([string(credentialsId: 'GITHUB_TOKEN', variable: 'token')]) {
                         def output = sh(script: "git ls-remote --heads https://${token}@github.com/sizov2405/autoban_telegram_bot.git", returnStdout: true)
-                        println(output)
+                        branches = getAllGitBranches(output)
                     }
+                    propertyList.add(getChoiceParameterDefinition('branch',branches))
+                    timeout(time: 2, unit : 'MINUTES') {
+                        customSelections = input(id: 'baseChoices', message: 'Set params', parameters: propertyList)
+                    }
+                    def branch = customSelections['branch']
+                    println("Branch ${branch}")
                 }
             }
         }
@@ -31,11 +39,11 @@ def getAllGitBranches(scriptOutput) {
             branches.add(element)
         }
     }
-    return branches.join("\n")
+    return branches
 }
 
-def getChoiceParameterDefinition() {
-    return [$class: 'ChoiceParameterDefinition', choices: ['ADD','SHOW','DELETE','UPDATE','RESET'], description: 'Choose an Operation', name: '']
+def getChoiceParameterDefinition(name, values) {
+    return [$class: 'ChoiceParameterDefinition', choices: values, description: 'Choose an Operation', name: name]
 }
 
 def getApplicationDeployments(applicationName) {
